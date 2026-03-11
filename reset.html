@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EcoConnect</title>
+    <!-- Menghubungkan CSS -->
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="hilangkanLoading()">
+
+    <!-- 1. LOADING SCREEN -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+
+    <!-- 2. NAVBAR ATAS (Pojok Kanan Atas Transisi) -->
+    <nav class="top-nav">
+        <div class="logo">
+            <i class="fa-solid fa-leaf" style="color: #00E65B;"></i> EcoConnect
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="about.html" class="nav-item">About</a>
+            <a href="login.html" class="btn-nav-login">Login</a>
+        </div>
+    </nav>
+
+    <!-- 3. CONTAINER FORM LOGIN -->
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Find Your Account</h2>
+            <p>Enter your email address.</p>
+        </div>
+
+        <!-- Toggle Pilihan Peran -->
+        <!-- <div class="role-toggle">
+            <button class="toggle-btn active" id="btn-user" onclick="setRole('user')">User</button>
+            <button class="toggle-btn" id="btn-admin" onclick="setRole('admin')">Admin</button>
+        </div> -->
+
+        <!-- Kartu Form -->
+        <div class="login-card">
+            <!-- MENGGUNAKAN FORM UNTUK VALIDASI PESAN KUSTOM -->
+            <form onsubmit="prosesReset(event)">
+
+                <!-- Input Username -->
+                <div class="input-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="email" placeholder="email" required
+                            oninvalid="this.setCustomValidity('Please enter your email')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+                </div>
+
+                <!-- Input New Password -->
+                <div class="input-group">
+                    <label>Password Baru</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="new-password" placeholder="Masukkan password baru" required
+                            oninvalid="this.setCustomValidity('Please enter your new password')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+                </div>
+
+                <!-- Input Confirm Password -->
+                <div class="input-group">
+                    <label>Konfirmasi Password Baru</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="confirm-password" placeholder="Konfirmasi password baru" required
+                            oninvalid="this.setCustomValidity('Please confirm your new password')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+                </div>
+
+                <!-- Tombol Login (Tanpa Panah) -->
+                <button type="submit" class="btn-submit">Reset password</button>
+
+                <div class="register-link">
+                    Sudah punya akun?<a href="login.html"> Login</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer Kecil -->
+        <div class="footer-text">
+            <i class="fa-solid fa-recycle" style="color:#00E65B"></i> Powered by EcoConnect ID
+        </div>
+    </div>
+
+    <!-- 4. MEMANGGIL JAVASCRIPT -->
+    <script src="js/reset.js"></script>
+</body>
+
+</html>

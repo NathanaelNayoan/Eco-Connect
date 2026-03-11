@@ -1,0 +1,68 @@
+[
+  {
+    "id": "admin_1",
+    "fullName": "Administrator",
+    "role": "admin",
+    "isVerified": 0
+  },
+  {
+    "id": "user_1",
+    "fullName": "Budi Santoso",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_b676cefbde8448_19cc8e29292",
+    "fullName": "Joko Susanto",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_41019808042e88_19cc8e9238b",
+    "fullName": "Joko Susanto",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_6a9a1d3bda60c_19cc8f8eeb9",
+    "fullName": "nathanael nayoan nayoan",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_8ed00d4a973b58_19cc904ea0c",
+    "fullName": "Testing API",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_fcec33ce35039_19cc92bec0c",
+    "fullName": null,
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_dcb09dd91efb6_19cc92c57b5",
+    "fullName": null,
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_0cde525905d8a8_19cc92f4264",
+    "fullName": "tester akun",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_53909107fc6d6_19cc935a04b",
+    "fullName": "testing first",
+    "role": "user",
+    "isVerified": 0
+  },
+  {
+    "id": "user_e6971f73b3e738_19cc93ca13b",
+    "fullName": "1111 2222",
+    "role": "user",
+    "isVerified": 0
+  }
+]

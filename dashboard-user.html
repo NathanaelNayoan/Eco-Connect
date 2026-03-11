@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard User - EcoConnect</title>
+    <link rel="stylesheet" href="css/dashboard-user.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo" aria-hidden="true">
+                    <i class="fa-solid fa-leaf" style="color:#00E65B;"></i>
+                </div>
+                <div class="title">
+                    <strong>EcoConnect</strong>
+                    <span>Dashboard User</span>
+                </div>
+            </div>
+
+            <nav class="side-nav" aria-label="Navigasi dashboard">
+                <button class="side-link active" type="button" data-page="page-overview">
+                    <i class="fa-solid fa-border-all"></i> Overview
+                </button>
+                <button class="side-link" type="button" data-page="page-waste">
+                    <i class="fa-solid fa-recycle"></i> Tukar Sampah
+                </button>
+                <button class="side-link" type="button" data-page="page-cashout">
+                    <i class="fa-solid fa-money-bill-transfer"></i> Tukar Uang
+                </button>
+                <button class="side-link" type="button" data-page="page-profile">
+                    <i class="fa-solid fa-user"></i> Profil
+                </button>
+            </nav>
+
+            <div class="side-footer">
+                <div class="mini-profile">
+                    <div class="avatar" id="sidebar-avatar">EC</div>
+                    <div class="meta">
+                        <div class="name" id="sidebar-name">Pengguna</div>
+                        <div class="sub">EcoConnect Member</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btn-logout" type="button">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div class="left">
+                    <h1 id="topbar-title">Overview</h1>
+                    <p>Halo, <strong id="greet-name">Reign</strong> — pantau aktivitas dan kelola Eco-coins kamu.</p>
+                </div>
+                <div class="right">
+                    <button class="icon-btn" id="btn-refresh" type="button" title="Perbarui data">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <a class="icon-btn" href="index.html" title="Ke beranda"
+                        style="display:grid;place-items:center;text-decoration:none;">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <!-- OVERVIEW -->
+                <section class="page active" id="page-overview">
+                    <div class="cards">
+                        <div class="card">
+                            <div class="label">Total Sampah <i class="fa-solid fa-trash-can"></i></div>
+                            <div class="value" id="ov-total-kg">0 kg</div>
+                            <div class="sub" id="ov-earned-coins">0 coin terkumpul</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Saldo Eco-coin <i class="fa-solid fa-coins"></i></div>
+                            <div class="value" id="ov-balance-coins">0 coin</div>
+                            <div class="sub">Siap dicairkan ketika memenuhi syarat</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Setara Rupiah <i class="fa-solid fa-wallet"></i></div>
+                            <div class="value" id="ov-balance-rupiah">Rp 0</div>
+                            <div class="sub">Kurs: 1 coin = Rp 100</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Total Dicairkan <i class="fa-solid fa-hand-holding-dollar"></i></div>
+                            <div class="value" id="ov-withdrawn">Rp 0</div>
+                            <div class="sub">Akumulasi pencairan berhasil</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>Aksi cepat</h2>
+                            <span class="hint">Masuk ke fitur yang kamu butuhkan</span>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-primary" id="go-waste" type="button">
+                                <i class="fa-solid fa-recycle"></i> Tukar Sampah
+                            </button>
+                            <button class="btn btn-soft" id="go-cashout" type="button">
+                                <i class="fa-solid fa-money-bill-transfer"></i> Tukar Uang
+                            </button>
+                            <button class="btn btn-ghost" id="go-profile" type="button">
+                                <i class="fa-solid fa-user"></i> Profil
+                            </button>
+                        </div>
+                        <div class="notice ok" style="margin-top:12px;">
+                            <strong>Catatan:</strong> Riwayat tukar sampah dan riwayat pencairan dipisahkan di
+                            masing-masing fitur.
+                            Status transaksi akan berubah otomatis dari <strong>Diproses</strong> menjadi
+                            <strong>Selesai/Berhasil</strong> (simulasi) setelah beberapa detik.
+                        </div>
+                    </div>
+
+                    <div class="panel" style="margin-top:20px; text-align:center; padding: 24px;">
+                        <h2>Pohon Virtual <i class="fa-solid fa-tree" style="color:#00E65B;"></i></h2>
+                        <span class="hint">Pohon ini akan tumbuh seiring dengan jumlah total sampah yang kamu kumpulkan.
+                            Capai Fase 5 untuk bonus reward menanti!</span>
+                        <div id="virtual-tree-container"
+                            style="margin: 32px auto; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height: 160px;">
+                            <div id="anim-tree" class="animated-tree"
+                                style="transform: scale(0.2); transform-origin: bottom center; transition: transform 0.8s ease;">
+                                <div class="tree-leaves"></div>
+                                <div class="tree-trunk"></div>
+                            </div>
+                        </div>
+                        <div
+                            style="background: rgba(0, 230, 91, 0.1); padding: 12px; border-radius: 8px; display:inline-block;">
+                            <strong id="vt-phase">Fase 1</strong><br>
+                            <span id="vt-height" style="font-size: 14px; color: #4b5563;">Tinggi: 5 cm</span>
+                        </div>
+                        <div id="vt-bonus" class="notice ok" style="margin-top:12px; display:none;">
+                            <strong>Selamat!</strong> Pohonmu telah mencapai Fase 5. Kamu sekarang mendapatkan bonus
+                            <strong>+500 coin</strong> di setiap permintaan penjemputan sampah berikutnya!
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TUKAR SAMPAH -->
+                <section class="page" id="page-waste">
+                    <div class="cards">
+                        <div class="card">
+                            <div class="label">Total Sampah Kamu <i class="fa-solid fa-scale-balanced"></i></div>
+                            <div class="value" id="waste-total-kg">0 kg</div>
+                            <div class="sub">Akumulasi sepanjang penggunaan</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Total Reward <i class="fa-solid fa-coins"></i></div>
+                            <div class="value" id="waste-total-coins">0 coin</div>
+                            <div class="sub">Reward dari semua tukar sampah</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Form Tukar Sampah</h2>
+                                <span class="hint">Upload foto, isi berat & lokasi penjemputan</span>
+                            </div>
+                            <form class="form" id="form-waste">
+                                <div class="row-2">
+                                    <div class="field">
+                                        <label>Jenis sampah (bisa lebih dari 1)</label>
+                                        <div class="actions" id="waste-jenis-group" style="flex-wrap:wrap;gap:8px;">
+                                            <label class="chip small-chip">
+                                                <input type="checkbox" value="Plastik">
+                                                <span>Plastik</span>
+                                            </label>
+                                            <label class="chip small-chip">
+                                                <input type="checkbox" value="Kertas">
+                                                <span>Kertas</span>
+                                            </label>
+                                            <label class="chip small-chip">
+                                                <input type="checkbox" value="Karton">
+                                                <span>Karton</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label for="waste-berat">Total berat sampah (kg)</label>
+                                        <input id="waste-berat" type="number" min="2" step="1"
+                                            placeholder="Minimal 2 kg, contoh: 5" required>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label for="waste-foto">Foto sampah (Hanya JPG/JPEG/HEIC/HEIF, maks. 10
+                                        foto)</label>
+                                    <input id="waste-foto" type="file"
+                                        accept=".jpg,.jpeg,.heif,.heic,image/jpeg,image/heic" multiple>
+                                    <div id="waste-foto-names"
+                                        style="margin-top: 8px; font-size: 13px; color: var(--muted-2); display: flex; flex-direction: column; gap: 4px;">
+                                    </div>
+                                </div>
+
+                                <div class="notice ok" id="waste-coin-preview">Perkiraan reward: +0 Eco-coin</div>
+
+                                <div class="field">
+                                    <label>Sumber Alamat</label>
+                                    <select id="waste-address-source">
+                                        <option value="profil">Gunakan Alamat Utama Profil</option>
+                                        <option value="favorit">Gunakan Alamat Favorit Tersimpan</option>
+                                        <option value="baru">Ketik Alamat Baru</option>
+                                    </select>
+                                </div>
+                                <div class="row-2">
+                                    <div class="field">
+                                        <label for="waste-kecamatan">Kecamatan</label>
+                                        <select id="waste-kecamatan" required disabled>
+                                            <option value="" disabled selected>Pilih Kecamatan</option>
+                                            <option value="Airmadidi">Airmadidi</option>
+                                            <option value="Kalawat">Kalawat</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label for="waste-lokasi">Kelurahan</label>
+                                        <input type="text" id="waste-lokasi" placeholder="Nama Kelurahan/Desa" required
+                                            disabled>
+                                    </div>
+                                </div>
+                                <div class="row-2" style="margin-top: 8px;">
+                                    <div class="field">
+                                        <label for="waste-detail">Detail penjemputan</label>
+                                        <textarea id="waste-detail"
+                                            placeholder="Contoh: Rumah warna biru, pagar hitam..." required></textarea>
+                                    </div>
+                                    <div class="field">
+                                        <label for="waste-phone">Nomor telepon aktif</label>
+                                        <input type="tel" id="waste-phone" placeholder="Contoh: 08123456789" required>
+                                    </div>
+                                </div>
+
+                                <div class="actions" style="margin-top: 8px;" id="save-fav-container"
+                                    style="display:none;">
+                                    <button type="button" class="btn btn-soft" id="btn-save-favorit"
+                                        style="font-size: 13px; padding: 6px 12px;">
+                                        <i class="fa-regular fa-star"></i> Simpan ke Alamat Favorit
+                                    </button>
+                                </div>
+
+                                <div class="notice" style="margin-top: 8px;">
+                                    <strong>Jadwal Penjemputan (H-1 s/d Hari-H Jam 05:00):</strong><br>
+                                    - Kalawat: Penjemputan hari Senin. Pengajuan: Minggu (Bebas) s/d Senin 04:59
+                                    WITA.<br>
+                                    - Airmadidi: Penjemputan hari Selasa. Pengajuan: Senin (Bebas) s/d Selasa 04:59
+                                    WITA.
+                                </div>
+                                <div class="field">
+                                    <button type="button" class="btn btn-soft" id="btn-pick-map"
+                                        style="margin-top: 8px; font-size: 14px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px; width: fit-content;">
+                                        <i class="fa-solid fa-map-location-dot"></i> Pilih dari Peta
+                                    </button>
+                                    <div id="map-container"
+                                        style="display: none; height: 300px; margin-top: 8px; border-radius: 8px; border: 1px solid #e2e8f0; z-index: 1;">
+                                    </div>
+                                </div>
+
+                                <div class="actions">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fa-solid fa-paper-plane"></i> Kirim Permintaan
+                                    </button>
+                                    <button class="btn btn-ghost" type="reset">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Preview Foto</h2>
+                                <span class="hint">Tanpa akses kamera</span>
+                            </div>
+                            <div class="photo-preview" id="waste-photo-preview">
+                                <div class="placeholder">Upload foto sampah (JPG/PNG/WebP).<br>Tidak perlu akses kamera.
+                                </div>
+                            </div>
+                            <div class="notice" style="margin-top:12px;">
+                                <strong>Info:</strong> Data disimpan di perangkat (localStorage) untuk demo. Riwayat
+                                menampilkan nama file foto yang kamu upload.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>Riwayat Tukar Sampah</h2>
+                            <span class="hint">Riwayat khusus tukar sampah + total akumulasi</span>
+                        </div>
+                        <div class="table-wrap">
+                            <table aria-label="Riwayat tukar sampah">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Jenis</th>
+                                        <th>Berat</th>
+                                        <th>Foto</th>
+                                        <th>Lokasi</th>
+                                        <th>Status</th>
+                                        <th>Eco-coin</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="waste-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TUKAR UANG -->
+                <section class="page" id="page-cashout">
+                    <div class="cards">
+                        <div class="card">
+                            <div class="label">Saldo Coin <i class="fa-solid fa-coins"></i></div>
+                            <div class="value" id="cashout-balance-coins">0 coin</div>
+                            <div class="sub">Kurs: 1 coin = Rp 100</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Saldo Rupiah <i class="fa-solid fa-wallet"></i></div>
+                            <div class="value" id="cashout-balance-rupiah">Rp 0</div>
+                            <div class="sub" id="cashout-min-hint">Minimal pencairan Rp 100.000</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Total Dicairkan <i class="fa-solid fa-hand-holding-dollar"></i></div>
+                            <div class="value" id="cashout-total-withdrawn">Rp 0</div>
+                            <div class="sub">Akumulasi pencairan berhasil</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Form Tukar Uang</h2>
+                                <span class="hint">Minimal Rp 100.000</span>
+                            </div>
+                            <form class="form" id="form-cashout">
+                                <div class="field">
+                                    <label for="cashout-amount">Jumlah pencairan (Rp)</label>
+                                    <input id="cashout-amount" type="number" min="100000" step="1000"
+                                        placeholder="Contoh: 100000" required>
+                                </div>
+
+                                <div class="field">
+                                    <label>Metode pencairan</label>
+                                    <div class="actions" style="gap:8px;">
+                                        <label class="chip">
+                                            <input type="radio" name="cashout-method" value="wallet" checked>
+                                            <span>E-Wallet</span>
+                                        </label>
+                                        <label class="chip">
+                                            <input type="radio" name="cashout-method" value="bank">
+                                            <span>Bank</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row-2">
+                                    <div class="field">
+                                        <label for="cashout-provider">E-Wallet / Bank</label>
+                                        <select id="cashout-provider" required></select>
+                                    </div>
+                                    <div class="field">
+                                        <label for="cashout-accountNumber">Nomor akun / rekening</label>
+                                        <input id="cashout-accountNumber" type="text"
+                                            placeholder="Contoh: 0812xxxx / 1234567890" required>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label for="cashout-accountName">Nama pemilik akun</label>
+                                    <input id="cashout-accountName" type="text" placeholder="Sesuai e-wallet / rekening"
+                                        required>
+                                </div>
+
+                                <div class="notice" id="cashout-help">Masukkan jumlah pencairan. Minimal Rp 100.000.
+                                </div>
+
+                                <div class="actions">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fa-solid fa-money-bill-transfer"></i> Ajukan Pencairan
+                                    </button>
+                                    <button class="btn btn-ghost" type="reset">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Syarat Pencairan</h2>
+                                <span class="hint">E-wallet & bank</span>
+                            </div>
+                            <div class="notice" id="cashout-notice">
+                                Saldo kamu belum cukup untuk dicairkan. <strong>Minimal Rp 100.000</strong>.
+                            </div>
+                            <div class="notice ok" style="margin-top:12px;">
+                                <strong>Tips:</strong> Kumpulkan coin dari fitur <strong>Tukar Sampah</strong>. Semakin
+                                rutin setor, semakin cepat saldo mencapai minimal pencairan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>Riwayat Tukar Uang</h2>
+                            <span class="hint">Riwayat khusus pencairan + total akumulasi</span>
+                        </div>
+                        <div class="table-wrap">
+                            <table aria-label="Riwayat tukar uang">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Metode</th>
+                                        <th>Akun</th>
+                                        <th>Nama</th>
+                                        <th>Nominal</th>
+                                        <th>Eco-coin</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cashout-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PROFIL -->
+                <section class="page" id="page-profile">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>Profil Pribadi</h2>
+                            <span class="hint" id="pf-memberSince"></span>
+                        </div>
+                        <div class="form">
+                            <div class="field">
+                                <label>Nama lengkap</label>
+                                <div id="pf-fullName-text"></div>
+                            </div>
+                            <div class="row-2">
+                                <div class="field">
+                                    <label>Kontak (HP / Email)</label>
+                                    <div id="pf-contact-text"></div>
+                                </div>
+                                <div class="field">
+                                    <label>Tanggal lahir</label>
+                                    <div id="pf-birth-text"></div>
+                                </div>
+                            </div>
+                            <div class="row-2">
+                                <div class="field">
+                                    <label>Kecamatan</label>
+                                    <div id="pf-kecamatan-text"></div>
+                                </div>
+                                <div class="field">
+                                    <label>Kelurahan / Desa</label>
+                                    <div id="pf-kelurahan-text"></div>
+                                </div>
+                            </div>
+                            <div class="row-2">
+                                <div class="field">
+                                    <label>Jenis kelamin</label>
+                                    <div id="pf-gender-text"></div>
+                                </div>
+                                <div class="field">
+                                    <label>ID Member (simulasi)</label>
+                                    <div id="pf-memberId-text"></div>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <a class="btn btn-ghost" href="index.html"
+                                    style="text-decoration:none;display:inline-flex;align-items:center;gap:10px;">
+                                    <i class="fa-solid fa-house"></i> Kembali ke Beranda
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="js/dashboard-user.js"></script>
+</body>
+
+</html>

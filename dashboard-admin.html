@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - EcoConnect</title>
+    <link rel="stylesheet" href="css/dashboard-user.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"
+                    style="background: rgba(255,152,0,0.12); border-color: rgba(255,152,0,0.25);">
+                    <i class="fa-solid fa-user-shield" style="color:#ff9800;"></i>
+                </div>
+                <div class="title">
+                    <strong>EcoConnect</strong>
+                    <span>Dashboard Admin</span>
+                </div>
+            </div>
+
+            <nav class="side-nav" aria-label="Navigasi admin">
+                <button class="side-link active" type="button" data-page="page-overview">
+                    <i class="fa-solid fa-border-all"></i> Beranda
+                </button>
+                <button class="side-link" type="button" data-page="page-verify-user">
+                    <i class="fa-solid fa-user-check"></i> Verifikasi Pengguna
+                </button>
+                <button class="side-link" type="button" data-page="page-verify-waste">
+                    <i class="fa-solid fa-list-check"></i> Verifikasi Sampah
+                </button>
+                <button class="side-link" type="button" data-page="page-verify-cashout">
+                    <i class="fa-solid fa-money-check-dollar"></i> Pencairan Koin
+                </button>
+                <button class="side-link" type="button" data-page="page-contacts">
+                    <i class="fa-solid fa-envelope-open-text"></i> Pesan Masuk
+                </button>
+                <button class="side-link" type="button" data-page="page-stats">
+                    <i class="fa-solid fa-chart-pie"></i> Data Pengguna
+                </button>
+            </nav>
+
+            <div class="side-footer">
+                <div class="mini-profile">
+                    <div class="avatar"
+                        style="background: rgba(255,152,0,0.12); border-color: rgba(255,152,0,0.25); color: #ff9800;">AD
+                    </div>
+                    <div class="meta">
+                        <div class="name">Administrator</div>
+                        <div class="sub">EcoConnect System</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="btn-logout" type="button">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div class="left">
+                    <h1 id="topbar-title">Beranda</h1>
+                    <p>Halo, <strong>Admin</strong> — kelola dan tinjau seluruh aktivitas pengguna EcoConnect.</p>
+                </div>
+                <div class="right">
+                    <button class="icon-btn" id="btn-refresh" type="button" title="Perbarui data">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <a class="icon-btn" href="index.html" title="Ke beranda"
+                        style="display:grid;place-items:center;text-decoration:none;">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <!-- BERANDA -->
+                <section class="page active" id="page-overview">
+                    <div class="cards">
+                        <div class="card">
+                            <div class="label">Total Pengguna <i class="fa-solid fa-users"></i></div>
+                            <div class="value" id="ov-users">0</div>
+                            <div class="sub">Seluruh partisipan terdaftar</div>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #facc15;">
+                            <div class="label">Verifikasi Pengguna <i class="fa-solid fa-user-clock"></i></div>
+                            <div class="value" id="ov-pending-users" style="color: #facc15;">0</div>
+                            <div class="sub">Menunggu persetujuan KTM/Selfie</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Antrean Sampah <i class="fa-solid fa-clock"></i></div>
+                            <div class="value" id="ov-pending-waste" style="color: #ff9800;">0</div>
+                            <div class="sub">Butuh verifikasi aktual</div>
+                        </div>
+                        <div class="card">
+                            <div class="label">Antrean Pencairan <i class="fa-solid fa-money-bill-transfer"></i></div>
+                            <div class="value" id="ov-pending-cashout" style="color: #ff9800;">0</div>
+                            <div class="sub">Butuh transfer bank/e-wallet</div>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Lingkaran Tahunan & Tabel Peringkat -->
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-top: 16px;">
+
+                        <!-- Pie Chart 1 Tahun -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Komposisi Sampah (1 Tahun Terakhir)</h2>
+                            </div>
+                            <div
+                                style="position: relative; height: 450px; width: 100%; display: grid; place-items: center;">
+                                <canvas id="chart-annual-waste" style="max-height: 100%;"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Ranking Pengguna -->
+                        <div class="panel" style="display: flex; flex-direction: column;">
+                            <div class="panel-header">
+                                <h2>Peringkat Pengguna Teratas</h2>
+                                <span class="hint">Diurutkan berdasarkan berat sampah terbanyak</span>
+                            </div>
+                            <div class="table-wrap" style="flex: 1; margin-top: 8px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Peringkat</th>
+                                            <th>Nama Pengguna</th>
+                                            <th>Total Sampah (kg)</th>
+                                            <th>Total Koin Dikumpulkan</th>
+                                            <th>Total Uang Dicairkan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="user-ranking-tbody">
+                                        <!-- Data will be populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VERIFIKASI PENGGUNA -->
+                <section class="page" id="page-verify-user">
+                    <div class="panel" style="margin-bottom: 16px;">
+                        <div class="panel-header">
+                            <h2>Antrean Verifikasi Pengguna Baru</h2>
+                            <span class="hint">Tinjau biodata, KTP, dan foto selfie pengguna sebelum memberi mereka
+                                akses penuh</span>
+                        </div>
+                        <div class="actions" style="margin-bottom: 16px;">
+                            <button class="btn btn-soft active" type="button">Butuh Tindakan</button>
+                        </div>
+                    </div>
+
+                    <div id="user-verify-list-container" style="display: flex; flex-direction: column; gap: 12px;">
+                    </div>
+                </section>
+
+                <!-- VERIFIKASI SAMPAH -->
+                <section class="page" id="page-verify-waste">
+                    <div class="panel" style="margin-bottom: 16px;">
+                        <div class="panel-header">
+                            <h2>Status Penjemputan Sampah</h2>
+                            <span class="hint">Kelola status pesanan dari pengguna</span>
+                        </div>
+                        <div class="actions" style="margin-bottom: 16px;" id="waste-tabs">
+                            <button class="btn btn-soft active" type="button" data-tab="Menunggu">Belum
+                                Dijemput</button>
+                            <button class="btn btn-ghost" type="button" data-tab="Dalam_Penjemputan">Sudah Dijemput &
+                                Menunggu Verifikasi</button>
+                            <button class="btn btn-ghost" type="button" data-tab="Selesai">Sudah Diverifikasi</button>
+                        </div>
+                    </div>
+
+                    <div id="waste-list-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                </section>
+
+                <!-- PENCAIRAN KOIN -->
+                <section class="page" id="page-verify-cashout">
+                    <div class="panel" style="margin-bottom: 16px;">
+                        <div class="panel-header">
+                            <h2>Verifikasi Pencairan Koin</h2>
+                            <span class="hint">Unggah bukti transfer untuk pencairan berstatus "Diproses"</span>
+                        </div>
+                        <div class="actions" style="margin-bottom: 16px;" id="cashout-tabs">
+                            <button class="btn btn-soft active" type="button" data-tab="Diproses">Menunggu Bukti
+                                Transfer</button>
+                            <button class="btn btn-ghost" type="button" data-tab="Berhasil">Riwayat Sukses</button>
+                        </div>
+                    </div>
+
+                    <div id="cashout-list-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                </section>
+
+                <!-- PESAN MASUK -->
+                <section class="page" id="page-contacts">
+                    <div class="panel" style="margin-bottom: 16px;">
+                        <div class="panel-header">
+                            <h2>Pesan & Pertanyaan Pengguna</h2>
+                            <span class="hint">Tabel daftar pesan dari halaman "Tentang Kami". Hubungi kembali pengguna
+                                lewat WhatsApp atau Email.</span>
+                        </div>
+                    </div>
+
+                    <div id="contacts-list-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                </section>
+
+                <!-- STATISTIK KECAMATAN -->
+                <section class="page" id="page-stats">
+                    <div class="panel" style="margin-bottom: 16px;">
+                        <div class="panel-header">
+                            <h2>Data Pengguna (Kecamatan)</h2>
+                            <span class="hint">Ringkasan analitik per area spesifik</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <!-- Kalawat Card -->
+                            <div
+                                style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+                                <h3 style="margin-bottom: 12px; color: var(--accent);"><i
+                                        class="fa-solid fa-map-location-dot"></i> Kecamatan Kalawat</h3>
+                                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--muted);">Jumlah Pengguna:</span>
+                                        <strong id="stat-k-users">0</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--muted);">Sampah Disetor (3 Bln):</span>
+                                        <strong id="stat-k-kg">0 kg</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--muted);">Distribusi Bahan:</span>
+                                        <div style="text-align: right;" id="stat-k-dist">
+                                            <div>Plastik: 0</div>
+                                            <div>Kertas: 0</div>
+                                            <div>Karton: 0</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px;">
+                                        <span style="color: var(--muted);">Total Uang Dicairkan:</span>
+                                        <strong id="stat-k-rp" style="color: #00E65B;">Rp 0</strong>
+                                    </div>
+                                    <div style="margin-top: 16px;">
+                                        <canvas id="chart-kalawat" style="width: 100%; height: 200px;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Airmadidi Card -->
+                            <div
+                                style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+                                <h3 style="margin-bottom: 12px; color: var(--accent);"><i
+                                        class="fa-solid fa-map-location-dot"></i> Kecamatan Airmadidi</h3>
+                                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--muted);">Jumlah Pengguna:</span>
+                                        <strong id="stat-a-users">0</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--muted);">Sampah Disetor (3 Bln):</span>
+                                        <strong id="stat-a-kg">0 kg</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--muted);">Distribusi Bahan:</span>
+                                        <div style="text-align: right;" id="stat-a-dist">
+                                            <div>Plastik: 0</div>
+                                            <div>Kertas: 0</div>
+                                            <div>Karton: 0</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px;">
+                                        <span style="color: var(--muted);">Total Uang Dicairkan:</span>
+                                        <strong id="stat-a-rp" style="color: #00E65B;">Rp 0</strong>
+                                    </div>
+                                    <div style="margin-top: 16px;">
+                                        <canvas id="chart-airmadidi" style="width: 100%; height: 200px;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL VIEW FOTO -->
+    <div id="modal-photo-viewer"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; justify-content: center; align-items: center;">
+        <div
+            style="background:var(--panel); padding:24px; border-radius:16px; border:1px solid var(--border); width: 600px; max-width: 90%; text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin: 0;">Foto Bukti Sampah</h3>
+                <button type="button" class="btn btn-ghost"
+                    onclick="document.getElementById('modal-photo-viewer').style.display='none'"
+                    style="padding: 4px 8px;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="photo-viewer-container"
+                style="display: flex; flex-direction: column; gap: 12px; max-height: 60vh; overflow-y: auto;">
+                <!-- Gambar Dimasukkan Secara Dinamis Disini -->
+            </div>
+
+            <div style="margin-top: 16px; text-align: right;">
+                <button type="button" class="btn btn-secondary"
+                    onclick="document.getElementById('modal-photo-viewer').style.display='none'">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL VERIFIKASI AKUN PENGGUNA -->
+    <div id="modal-verif-user"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; place-items:center;">
+        <div
+            style="background:var(--panel); padding:24px; border-radius:16px; border:1px solid var(--border); width:700px; max-width:95%; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h3 style="margin: 0;">Tinjauan Pendaftaran Akun</h3>
+                <button type="button" class="btn btn-ghost" id="btn-close-user-modal" style="padding: 4px 8px;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <!-- Kiri: Biodata -->
+                <div>
+                    <h4
+                        style="margin-top: 0; margin-bottom: 16px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                        Biodata Diri</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                        <div><strong style="display:block; color:var(--muted); font-size:12px; margin-bottom: 4px;">Nama
+                                Lengkap</strong> <span id="vu-fullname">-</span></div>
+                        <div><strong style="display:block; color:var(--muted); font-size:12px; margin-bottom: 4px;">Usia
+                                & Tanggal Lahir</strong> <span id="vu-age">-</span></div>
+                        <div><strong
+                                style="display:block; color:var(--muted); font-size:12px; margin-bottom: 4px;">Jenis
+                                Kelamin</strong> <span id="vu-gender">-</span></div>
+                        <div><strong
+                                style="display:block; color:var(--muted); font-size:12px; margin-bottom: 4px;">Kontak
+                                (HP/Email)</strong> <span id="vu-contact">-</span></div>
+                        <div><strong style="display:block; color:var(--muted); font-size:12px; margin-bottom: 4px;">Asal
+                                Daerah</strong> <span id="vu-address">-</span></div>
+                    </div>
+                </div>
+
+                <!-- Kanan: Foto -->
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 8px; color: var(--accent);">Foto KTP</h4>
+                        <div
+                            style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 4px; text-align: center; height: 160px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <span style="color: var(--muted); font-size: 12px;">Foto KTP tidak tersedia</span>
+                            <img id="vu-ktp-img" src="" alt="KTP"
+                                style="max-width: 100%; max-height: 100%; display: none; object-fit: contain; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 8px; color: var(--accent);">Selfie Bersama KTP</h4>
+                        <div
+                            style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 4px; text-align: center; height: 200px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <span style="color: var(--muted); font-size: 12px;">Foto Selfie tidak tersedia</span>
+                            <img id="vu-selfie-img" src="" alt="Selfie"
+                                style="max-width: 100%; max-height: 100%; display: none; object-fit: contain; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <p style="margin: 0; color: var(--muted); font-size: 13px;">Dengan menyetujui, akun ini bisa mulai
+                    menukar sampah & mencairkan nominal.</p>
+                <div class="actions">
+                    <button class="btn btn-primary" id="btn-save-user-verif" style="padding: 10px 24px;"><i
+                            class="fa-solid fa-check"></i> Setujui Akun Ini</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for input actual weight -->
+    <div id="modal-verif-waste"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; justify-content:center; align-items:center;">
+        <div
+            style="background:var(--panel); padding:24px; border-radius:16px; border:1px solid var(--border); width:400px; max-width:90%;">
+            <h3 style="margin-bottom: 16px;">Verifikasi Berat Aktual</h3>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">Masukkan berat timbangan aktual. Coin
+                akan dikalkulasi ulang berdasarkan temuan ini.</p>
+            <div
+                style="background: rgba(14, 165, 233, 0.1); border-left: 3px solid #0ea5e9; padding: 12px; margin-bottom: 16px; border-radius: 4px;">
+                <p style="margin: 0; font-size: 13px; color: #e2e8f0;"><strong>Informasi dari Kurir:</strong></p>
+                <p style="margin: 4px 0 0 0; font-size: 13px; color: var(--muted);">Kontak Kurir: <a
+                        href="https://wa.me/6281234567899" target="_blank"
+                        style="color: #0ea5e9; text-decoration: none;">081234567899</a></p>
+            </div>
+            <div class="field" style="margin-bottom: 16px;">
+                <label>Berat Dinyatakan User (kg)</label>
+                <input type="text" id="modal-waste-userkg" disabled>
+            </div>
+            <div class="field" style="margin-bottom: 16px;">
+                <label>Berat Aktual (kg)</label>
+                <input type="number" id="modal-waste-actualkg" min="1" step="0.1" required>
+            </div>
+            <div class="field actions">
+                <button class="btn btn-primary" id="btn-save-waste-verif">Konfirmasi & Selesai</button>
+                <button class="btn btn-ghost" id="btn-close-waste-modal">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for input proof of cashout -->
+    <div id="modal-verif-cashout"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; justify-content:center; align-items:center;">
+        <div
+            style="background:var(--panel); padding:24px; border-radius:16px; border:1px solid var(--border); width:400px; max-width:90%;">
+            <h3 style="margin-bottom: 16px;">Verifikasi Bukti Transfer</h3>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">Unggah bukti transfer sebagai bukti bahwa
+                dana telah diteruskan ke e-wallet/rekening pengguna.</p>
+            <div class="field" style="margin-bottom: 16px;">
+                <label>Upload Bukti (JPG/PNG)</label>
+                <input type="file" id="modal-cashout-proof" accept="image/*" required>
+            </div>
+            <div class="field actions">
+                <button class="btn btn-primary" id="btn-save-cashout-verif">Unggah & Selesaikan</button>
+                <button class="btn btn-ghost" id="btn-close-cashout-modal">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard-admin.js"></script>
+</body>
+
+</html>

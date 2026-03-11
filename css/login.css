@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- 1. RESET & DASAR --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #0d130f;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- 2. LOADING SCREEN --- */
+.loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0d130f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #1f2e24;
+    border-top: 5px solid #00E65B;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader-wrapper p {
+    color: #00E65B;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Kelas untuk menghilangkan loader via JS */
+.loader-wrapper.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* --- 3. NAVBAR (DISELARASKAN DENGAN HALAMAN LAIN) --- */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 8%;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+/* Menu Home & About */
+.nav-item {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+    transition: 0.3s ease;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #00E65B;
+    transition: 0.3s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #00E65B;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+    width: 100%;
+}
+
+/* Tombol Login di Navbar */
+.btn-nav-login {
+    background-color: #00E65B;
+    color: #0d130f !important;
+    padding: 10px 28px;
+    border-radius: 25px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-nav-login:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 230, 91, 0.3);
+}
+
+/* --- 4. LOGIN FORM CONTAINER --- */
+.login-container {
+    margin: auto;
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.login-header p {
+    color: #A0AAB2;
+}
+
+/* Role Toggle (User/Admin) */
+.role-toggle {
+    display: flex;
+    background-color: #17221a;
+    border-radius: 30px;
+    padding: 5px;
+    margin-bottom: 25px;
+    width: 250px;
+    margin-inline: auto;
+}
+
+.toggle-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #A0AAB2;
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.toggle-btn.active {
+    background-color: #0a100c;
+    color: #00E65B;
+}
+
+/* Card Style */
+.login-card {
+    background-color: #121a14;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #1f2e24;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+/* Input Wrapper & Focus Effect */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #0a100c;
+    border: 1px solid #1f2e24;
+    border-radius: 12px;
+    padding: 0 15px;
+    transition: 0.3s border-color;
+}
+
+.input-wrapper:focus-within {
+    border-color: #00E65B;
+}
+
+.input-wrapper i {
+    color: #6b7d72;
+}
+
+.input-wrapper input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 15px 10px;
+    width: 100%;
+    outline: none;
+}
+
+/* Ikon Mata (Password) */
+.eye-icon {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.eye-icon:hover {
+    color: #00E65B;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 25px;
+}
+
+.forgot-password a {
+    color: #00E65B;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.forgot-password a:hover {
+    color: #00ff66;
+}
+
+/* --- 5. TOMBOL LOGIN & LINK --- */
+.btn-submit {
+    width: 100%;
+    background-color: #00E65B;
+    color: #000;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-submit:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 230, 91, 0.3);
+}
+
+.register-link {
+    text-align: center;
+    font-size: 14px;
+    color: #A0AAB2;
+}
+
+.register-link a {
+    color: #00E65B;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.register-link a:hover {
+    color: #00ff66;
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 12px;
+    color: #6b7d72;
+}

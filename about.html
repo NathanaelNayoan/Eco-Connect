@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - EcoConnect</title>
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navbar (Konsisten dengan Transisi Index & Login) -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-leaf" style="color: #00E65B;"></i> EcoConnect
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="about.html" class="nav-item active">About</a>
+            <a href="login.html" class="btn-nav-login">Login</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section About -->
+    <header class="about-hero fade-in">
+        <div class="container">
+            <h1>Misi Kami untuk <span class="highlight">Bumi</span></h1>
+            <p>Mengubah krisis sampah menjadi peluang ekonomi sirkular melalui teknologi dan komunitas.</p>
+        </div>
+    </header>
+
+    <!-- Section Krisis Sampah (Data Jurnal) -->
+    <section class="problem-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Kenyataan Pahit Sampah Kita</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="grid-content">
+                <div class="text-block">
+                    <p>Menurut laporan Bank Dunia yang berjudul <i>"What a Waste 2.0"</i> (Kaza et al., 2018), dunia
+                        diproyeksikan menghasilkan <b>3,40 miliar ton</b> sampah per tahun pada tahun 2050 jika tidak
+                        ada tindakan segera. Di Indonesia sendiri, data SIPN menunjukkan jutaan ton sampah plastik
+                        berakhir di laut setiap tahunnya.</p>
+                    <p>Masalah utama bukanlah jumlah sampahnya, melainkan <b>pengelolaan yang salah</b>. Sebagian besar
+                        sampah rumah tangga tidak terpilah, sehingga nilai ekonomisnya hilang dan berakhir mencemari
+                        ekosistem.</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-card">
+                        <h3>33%</h3>
+                        <p>Sampah dunia tidak dikelola secara aman (World Bank)</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>8 Juta Ton</h3>
+                        <p>Plastik masuk ke laut tiap tahun</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Bagaimana EcoConnect Membantu -->
+    <section class="solution-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Solusi EcoConnect</h2>
+                <p>Kami hadir sebagai platform Bank Sampah Digital yang menghubungkan rumah tangga dengan industri daur
+                    ulang.</p>
+            </div>
+            <div class="solution-grid">
+                <div class="sol-item">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <h3>Ekonomi Sirkular</h3>
+                    <p>Menerapkan sistem di mana sampah kembali menjadi bahan baku, mengurangi kebutuhan ekstraksi
+                        sumber daya alam baru.</p>
+                </div>
+                <div class="sol-item">
+                    <i class="fa-solid fa-coins"></i>
+                    <h3>Incentive-Based Recycling</h3>
+                    <p>Memberikan <b>Eco-Coins</b> sebagai imbalan bagi pengguna yang memilah sampah, yang dapat
+                        dicairkan menjadi uang tunai.</p>
+                </div>
+                <div class="sol-item">
+                    <i class="fa-solid fa-tree"></i>
+                    <h3>Restorasi Alam</h3>
+                    <p>Sebagian keuntungan sistem dialokasikan untuk penanaman pohon, memastikan dampak positif ganda
+                        bagi lingkungan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION BARU: INPUT INTERAKTIF (Gaya Form Login) -->
+    <section class="contact-input-section">
+        <div class="container">
+            <div class="about-card-form">
+                <h3>Tertarik Membantu Bumi?</h3>
+                <p>Dapatkan update terbaru atau ajukan pertanyaan mengenai sistem Bank Sampah kami.</p>
+
+                <form id="contact-form">
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="contact-email" placeholder="Masukkan Email Anda" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <input type="tel" id="contact-wa"
+                                placeholder="Masukkan Nomor WhatsApp Anda (Cth: 0812... / 628...)" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-wrapper" style="align-items: flex-start;">
+                            <i class="fa-solid fa-message" style="margin-top: 14px;"></i>
+                            <textarea id="contact-msg" placeholder="Pesan atau Pertanyaan" required
+                                style="width: 100%; min-height: 100px; padding: 12px 14px 12px 40px; border: none; background: transparent; color: var(--text-color); font-family: inherit; resize: vertical; outline: none;"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-submit-contact">Kirim Pesan</button>
+                    <div id="contact-alert"
+                        style="display: none; margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 14px; text-align: center;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Referensi Jurnal/Penelitian -->
+    <section class="references">
+        <div class="container">
+            <h3>Referensi & Dasar Ilmiah</h3>
+            <ul>
+                <li>Kaza, S., et al. (2018). <i>What a Waste 2.0: A Global Snapshot of Solid Waste Management to
+                        2050</i>. World Bank Publications.</li>
+                <li>Jambeck, J. R., et al. (2015). <i>Plastic waste inputs from land into the ocean</i>. Science
+                    Journal.</li>
+                <li>Ellen MacArthur Foundation. <i>Towards the Circular Economy: Economic and Business Rationale for an
+                        Accelerated Transition</i>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer class="simple-footer">
+        <p>&copy; 2026 EcoConnect ID. Melindungi Lingkungan, Memberdayakan Masyarakat.</p>
+    </footer>
+
+    <script src="js/about.js"></script>
+</body>
+
+</html>

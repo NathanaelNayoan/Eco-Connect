@@ -1,0 +1,123 @@
+<!-- <!DOCTYPE html> -->
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - EcoConnect</title>
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="register-container">
+        <!-- Header / Logo -->
+        <div class="register-header">
+            <a href="login.html" class="back-btn"><i class="fa-solid fa-angle-left"></i></a>
+            <div class="logo">
+                <i class="fa-solid fa-leaf" style="color: #00E65B;"></i> EcoConnect
+            </div>
+        </div>
+
+        <div class="register-title">
+            <h2>Mulai di EcoConnect</h2>
+            <p>Buat akun untuk terhubung dengan komunitas peduli lingkungan dan mulai hasilkan Eco-Coins.</p>
+        </div>
+
+        <!-- Form Pendaftaran -->
+        <form id="formRegister" onsubmit="prosesDaftar(event)">
+
+            <!-- Nama Depan & Belakang -->
+            <div class="input-group">
+                <label>Nama</label>
+                <div class="row-2">
+                    <input type="text" id="namaDepan" placeholder="Nama depan" required>
+                    <input type="text" id="namaBelakang" placeholder="Nama belakang" required>
+                </div>
+            </div>
+
+            <!-- Tanggal Lahir (Dinamis via js/register.js) -->
+            <div class="input-group">
+                <label>Tanggal lahir <i class="fa-regular fa-circle-question"></i></label>
+                <div class="row-3">
+                    <select id="selectHari" required>
+                        <option value="" disabled selected>Hari</option>
+                    </select>
+                    <select id="selectBulan" required>
+                        <option value="" disabled selected>Bulan</option>
+                    </select>
+                    <select id="selectTahun" required>
+                        <option value="" disabled selected>Tahun</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Jenis Kelamin -->
+            <div class="input-group">
+                <label>Jenis kelamin <i class="fa-regular fa-circle-question"></i></label>
+                <select class="full-width" id="gender" required>
+                    <option value="" disabled selected>Pilih jenis kelamin Anda</option>
+                    <option value="L">Laki-laki</option>
+                    <option value="P">Perempuan</option>
+                    <option value="O">Lainnya</option>
+                </select>
+            </div>
+
+            <!-- Identitas & Verifikasi Umur -->
+            <div class="input-group">
+                <label>Foto KTP (wajib min. 17 tahun)</label>
+                <input type="file" id="idCardPhoto" accept="image/*" class="full-width" required>
+            </div>
+            <div class="input-group">
+                <label>Selfie dengan KTP <i class="fa-regular fa-id-card"></i></label>
+                <input type="file" id="selfiePhoto" accept="image/*" class="full-width" required>
+            </div>
+
+            <!-- Wilayah -->
+            <div class="input-group">
+                <label>Kecamatan & Kelurahan</label>
+                <div class="row-2">
+                    <select id="selectKecamatan" required>
+                        <option value="" disabled selected>Pilih Kecamatan</option>
+                        <option value="Airmadidi">Airmadidi</option>
+                        <option value="Kalawat">Kalawat</option>
+                    </select>
+                    <select id="selectKelurahan" required disabled>
+                        <option value="" disabled selected>Pilih Kelurahan/Desa</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Kontak -->
+            <div class="input-group">
+                <label>Nomor ponsel atau email</label>
+                <input type="text" id="kontak" class="full-width" placeholder="Nomor ponsel atau email" required>
+            </div>
+
+            <!-- Password (demo, tidak disimpan) -->
+            <div class="input-group">
+                <label>Kata sandi</label>
+                <input type="password" id="passwordReg" class="full-width" placeholder="Kata sandi baru" required>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <p>Orang yang menggunakan layanan kami mungkin telah mengunggah informasi kontak Anda ke EcoConnect. <a
+                        href="#">Pelajari selengkapnya</a>.</p>
+                <p>Dengan mengklik Daftar, Anda menyetujui <a href="#">Ketentuan</a>, <a href="#">Kebijakan Privasi</a>,
+                    dan <a href="#">Kebijakan Cookie</a> kami.</p>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <button type="submit" class="btn-submit">Daftar Sekarang</button>
+            <a href="login.html" class="btn-outline-back">Saya sudah punya akun</a>
+
+        </form>
+    </div>
+
+    <!-- PANGGIL FILE JAVASCRIPT DISINI -->
+    <script src="js/register.js"></script>
+</body>
+
+</html>
