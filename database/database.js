@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Path to the bundled database (read-only in Vercel)
-const staticDbPath = path.join(process.cwd(), 'database', 'database.sqlite');
+const staticDbPath = path.join(__dirname, 'database.sqlite');
 // Path to the writable database in Vercel
 const writableDbPath = '/tmp/database.sqlite';
 
@@ -16,11 +16,15 @@ if (!fs.existsSync(writableDbPath)) {
         if (fs.existsSync(staticDbPath)) {
             fs.copyFileSync(staticDbPath, writableDbPath);
             console.log(`[DB] Copied bundled database to /tmp`);
+            // Ensure permissions
+            fs.chmodSync(writableDbPath, 0o666);
         } else {
-            console.warn(`[DB] Bundled database not found, creating new one in /tmp`);
+            console.warn(`[DB] Bundled database not found at ${staticDbPath}, creating new one in /tmp`);
+            // Create empty file to ensure it exists
+            fs.writeFileSync(writableDbPath, '');
         }
     } catch (err) {
-        console.error(`[DB] Failed to copy database to /tmp: ${err.message}`);
+        console.error(`[DB] Failed to setup database in /tmp: ${err.message}`);
     }
 } else {
     console.log(`[DB] Using existing database in /tmp`);

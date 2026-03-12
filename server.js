@@ -9,6 +9,19 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// Diagnostic route
+app.get('/api/debug/info', (req, res) => {
+    res.json({
+        nodeVersion: process.version,
+        platform: process.platform,
+        cwd: process.cwd(),
+        dirName: __dirname,
+        tmpExists: fs.existsSync('/tmp'),
+        dbExists: fs.existsSync('/tmp/database.sqlite')
+    });
+});
+
 app.use(express.static(path.join(__dirname, '/')));
 
 // Setup Multer for file uploads (use /tmp for Vercel compatibility)
@@ -28,8 +41,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Serves uploaded files statically
+// Serves uploaded files statically (check both /tmp and local folder)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(uploadDir));
 
 // Helper to generate UIDs
 const generateId = (prefix) => `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
