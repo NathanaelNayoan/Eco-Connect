@@ -32,14 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (!res.ok) {
-                    throw new Error("Gagal mengirim pesan");
+                    console.error("Contact submission failed, status:", res.status);
+                    throw new Error("Gagal mengirim pesan (Status: " + res.status + ")");
                 }
 
                 showAlert("Terima kasih! Pesan Anda telah berhasil dikirim.", "success");
                 contactForm.reset();
             } catch (err) {
-                console.error(err);
-                showAlert("Terjadi kesalahan. Silakan coba lagi nanti.", "error");
+                console.error("Network error submitting contact:", err);
+                showAlert("Terjadi kesalahan (" + err.message + "). Silakan coba lagi nanti.", "error");
             } finally {
                 btnSubmit.disabled = false;
                 btnSubmit.textContent = "Kirim Pesan";

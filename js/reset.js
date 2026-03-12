@@ -38,8 +38,11 @@ async function prosesReset(event) {
         const data = await res.json();
 
         if (!res.ok) {
-            throw new Error(data.error || "Gagal melakukan reset password.");
+            console.error("Reset password failed with status:", res.status);
+            throw new Error(data.error || "Gagal melakukan reset password (Status: " + res.status + ").");
         }
+
+        console.log("Reset password successful:", data);
 
         alert("Password berhasil diubah! Silahkan login dengan password baru.");
         window.location.href = 'login.html';

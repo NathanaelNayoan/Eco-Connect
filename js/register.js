@@ -182,18 +182,20 @@ async function prosesDaftar(event) {
         });
 
         if (!res.ok) {
-            let errorMsg = "Gagal melakukan pendaftaran.";
+            console.error("Registration failed with status:", res.status);
+            let errorMsg = "Gagal melakukan pendaftaran. Silakan periksa koneksi atau data Anda.";
             try {
                 const errData = await res.json();
                 if (errData && errData.error) errorMsg = errData.error;
             } catch (e) {
-                console.error("Non-JSON error response:", e);
-                errorMsg = "Terjadi kesalahan pada server. Pastikan backend berjalan dengan baik.";
+                console.error("Non-JSON error response or empty body:", e);
+                errorMsg = "Terjadi kesalahan pada server (Status: " + res.status + "). Pastikan backend berjalan.";
             }
             throw new Error(errorMsg);
         }
 
         const data = await res.json();
+        console.log("Registration successful:", data);
 
         // Save the unique user ID from backend as sessionId
         localStorage.setItem('sessionId', data.id);

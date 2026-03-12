@@ -74,10 +74,12 @@ async function prosesLogin(event) {
         });
 
         if (!res.ok) {
+            console.error("Login failed with status:", res.status);
             throw new Error("Email atau password tidak valid.");
         }
 
         const data = await res.json();
+        console.log("Login successful:", data);
 
         // Simpan sesi
         localStorage.setItem('sessionId', data.user.id);

@@ -53,9 +53,11 @@
         try {
             const res = await fetch(API_URL + url);
             if (res.ok) return await res.json();
-            console.error("API Error", res.status);
+            console.error("API Error at " + url + ", Status:", res.status);
+            if (res.status === 404) alert("Data tidak ditemukan (404) di " + url);
         } catch (e) {
-            console.error("Fetch failed", e);
+            console.error("Fetch failed for " + url + ":", e);
+            alert("Terjadi kesalahan jaringan saat mengambil data.");
         }
         return [];
     }

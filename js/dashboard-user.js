@@ -55,8 +55,13 @@
       if (res.ok) {
         const data = await res.json();
         if (data) return data;
+      } else {
+        console.error("Failed to load profile, status:", res.status);
       }
-    } catch (e) { console.error("Error loading profile:", e); }
+    } catch (e) { 
+        console.error("Network error loading profile:", e); 
+        alert("Gagal memuat profil. Pastikan koneksi internet stabil.");
+    }
     return {
       fullName: "Budi Santoso",
       birthDate: "",
@@ -82,8 +87,12 @@
       if (res.ok) {
         const data = await res.json();
         return data.balanceCoins || 0;
+      } else {
+        console.error("Failed to load balance, status:", res.status);
       }
-    } catch (e) { console.error(e); }
+    } catch (e) { 
+        console.error("Network error loading balance:", e); 
+    }
     return 0;
   }
 
