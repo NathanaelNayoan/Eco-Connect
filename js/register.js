@@ -125,7 +125,7 @@ async function prosesDaftar(event) {
     const gender = document.getElementById('gender').value;
 
     const fullName = (namaDepan + ' ' + namaBelakang).trim();
-    const API_URL = 'http://localhost:3000';
+    const API_URL = '';
 
     if (!kecamatanValue || !kelurahanValue) {
         alert("Silakan pilih Kecamatan dan Kelurahan terlebih dahulu.");

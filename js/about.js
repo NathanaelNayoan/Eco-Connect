@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnSubmit = document.getElementById("btn-submit-contact");
     const alertBox = document.getElementById("contact-alert");
 
-    const API_URL = 'http://localhost:3000';
+    const API_URL = '';
 
     if (contactForm) {
         contactForm.addEventListener("submit", async (e) => {

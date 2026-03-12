@@ -59,7 +59,7 @@ async function prosesLogin(event) {
 
     const userVal = document.getElementById('username').value;
     const passVal = document.getElementById('password').value;
-    const API_URL = 'http://localhost:3000';
+    const API_URL = '';
 
     const btnSubmit = document.querySelector('.btn-submit');
     const originalText = btnSubmit.textContent;

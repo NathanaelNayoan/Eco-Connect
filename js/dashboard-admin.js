@@ -47,7 +47,7 @@
     function loadBalanceCoins() { return 0; }
     function saveBalanceCoins() { }
 
-    const API_URL = 'http://localhost:3000';
+    const API_URL = '';
 
     async function fetchData(url) {
         try {

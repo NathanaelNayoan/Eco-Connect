@@ -16,7 +16,7 @@ async function prosesReset(event) {
     const emailVal = document.getElementById('email').value;
     const newPassVal = document.getElementById('new-password').value;
     const confirmPassVal = document.getElementById('confirm-password').value;
-    const API_URL = 'http://localhost:3000';
+    const API_URL = '';
 
     if (newPassVal !== confirmPassVal) {
         alert("Konfirmasi password tidak cocok!");

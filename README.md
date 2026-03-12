@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # EcoConnect
 
@@ -34,3 +35,6 @@ Penumpukan sampah kertas, kardus, dan plastik menjadi salah satu penyumbang penc
 1. Clone repositori ini:
    ```bash
    git clone [https://github.com/username/eco-connect.git](https://github.com/username/eco-connect.git)
+=======
+# Eco-Connect
+>>>>>>> 650685f591717e152d174248df2850cacaa75f39
