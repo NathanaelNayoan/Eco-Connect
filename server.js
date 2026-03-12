@@ -11,10 +11,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
-// Setup Multer for file uploads
-const uploadDir = path.join(__dirname, 'uploads');
+// Setup Multer for file uploads (use /tmp for Vercel compatibility)
+const uploadDir = '/tmp/uploads';
 if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
+    try {
+        fs.mkdirSync(uploadDir, { recursive: true });
+        console.log(`[SERVER] Created upload directory: ${uploadDir}`);
+    } catch (err) {
+        console.error(`[SERVER] Failed to create upload directory: ${err.message}`);
+    }
 }
 
 const storage = multer.diskStorage({
@@ -32,10 +37,26 @@ const generateId = (prefix) => `${prefix}_${Math.random().toString(16).slice(2)}
 /* ================== AUTH API ================== */
 app.post('/api/auth/login', (req, res) => {
     const { email, password } = req.body;
+    console.log(`[DEBUG] Login attempt: ${email}`);
     db.get("SELECT id, role, fullName, balanceCoins FROM users WHERE email = ? AND password = ?", [email, password], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (!row) return res.status(401).json({ error: "Invalid credentials" });
+        if (err) {
+            console.error("[DEBUG] Database error:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        if (!row) {
+            console.warn(`[DEBUG] Login failed for ${email}: Invalid credentials`);
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
+        console.log(`[DEBUG] Login success: ${row.email || email} (Role: ${row.role})`);
         res.json({ user: row });
+    });
+});
+
+// Health check to verify DB
+app.get('/api/debug/db', (req, res) => {
+    db.all("SELECT id, email, role FROM users", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ count: rows.length, users: rows.map(u => ({ email: u.email, role: u.role })) });
     });
 });
 

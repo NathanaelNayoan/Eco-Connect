@@ -1,8 +1,38 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = path.resolve(__dirname, 'database.sqlite');
-const db = new sqlite3.Database(dbPath);
+// Path to the bundled database (read-only in Vercel)
+const staticDbPath = path.join(process.cwd(), 'database', 'database.sqlite');
+// Path to the writable database in Vercel
+const writableDbPath = '/tmp/database.sqlite';
+
+console.log(`[DB] Bundle path: ${staticDbPath}`);
+console.log(`[DB] Writable path: ${writableDbPath}`);
+
+// Copy static db to writable /tmp if it doesn't exist
+if (!fs.existsSync(writableDbPath)) {
+    try {
+        if (fs.existsSync(staticDbPath)) {
+            fs.copyFileSync(staticDbPath, writableDbPath);
+            console.log(`[DB] Copied bundled database to /tmp`);
+        } else {
+            console.warn(`[DB] Bundled database not found, creating new one in /tmp`);
+        }
+    } catch (err) {
+        console.error(`[DB] Failed to copy database to /tmp: ${err.message}`);
+    }
+} else {
+    console.log(`[DB] Using existing database in /tmp`);
+}
+
+const db = new sqlite3.Database(writableDbPath, (err) => {
+    if (err) {
+        console.error(`[DB] Error opening database: ${err.message}`);
+    } else {
+        console.log(`[DB] Connected to database in /tmp.`);
+    }
+});
 
 db.serialize(() => {
   // Create Users table
